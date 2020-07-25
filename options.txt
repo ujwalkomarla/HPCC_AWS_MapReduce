@@ -1,0 +1,6 @@
+V1 options: Reducer one node
+ -jobconf mapred.reduce.tasks=1
+
+V2 options: Reducer one node + numeric reverse sort
+ -jobconf mapred.reduce.tasks=1
+ -D mapred.text.key.comparator.options=-nr

@@ -1,0 +1,26 @@
+aws emr create-cluster --name "IMDB HPCC HW3" --release-label emr-4.4.0 --region us-east-1 --use-default-roles --ec2-attributes KeyName=hpcc --applications Name=Hadoop --log-uri 's3://hw3hpcc/logging/'  --enable-debugging \
+--instance-groups '[{"InstanceCount":1,"InstanceGroupType":"MASTER","InstanceType":"m1.medium","Name":"Master instance group - 1"},{"InstanceCount":2,"InstanceGroupType":"CORE","InstanceType":"m1.medium","Name":"Core instance group - 2"}]' \
+--steps '[{"Args":["hadoop-streaming","-files","s3://hpcchw3/code/mapperV1.py,s3://hpcchw3/code/reducerV1.py","-mapper","mapperV1.py","-reducer","reducerV1.py","-input","s3://hpcchw3/input/movies.csv","-output","s3://hpcchw3/output21/"],"Type":"CUSTOM_JAR","ActionOnFailure":"CONTINUE","Jar":"command-runner.jar","Properties":"","Name":"Streaming program1"}]'
+
+
+#ATTACH AmazonElasticMapReduceforEC2Role TO EMR_DefaultRole
+
+
+
+
+
+aws emr create-cluster --name "IMDB HPCC HW3" --release-label emr-4.4.0 --region us-east-1 --use-default-roles --ec2-attributes KeyName=hpcc --applications Name=Hadoop --log-uri 's3://hw3hpcc/logging/'  --enable-debugging \
+--instance-groups '[{"InstanceCount":1,"InstanceGroupType":"MASTER","InstanceType":"m1.medium","Name":"Master instance group - 1"},{"InstanceCount":2,"InstanceGroupType":"CORE","InstanceType":"m1.medium","Name":"Core instance group - 2"}]' \
+--steps '[{"Args":["hadoop-streaming","-files","s3://hpcchw3/code/mapperV2.py,s3://hpcchw3/code/reducerV2.py","-mapper","mapperV2.py","-reducer","reducerV2.py","-input","s3://hpcchw3/input/movies.csv","-output","s3://hpcchw3/output22/"],"Type":"CUSTOM_JAR","ActionOnFailure":"CONTINUE","Jar":"command-runner.jar","Properties":"","Name":"Streaming program1"}]' \
+--configurations '[{"Classification":"mapred-site", "Properties":{ "mapred.output.key.comparator.class":"org.apache.hadoop.mapred.lib.KeyFieldBasedComparator", "mapred.text.key.comparator.options":"-nr"}, "Configurations":[]}]'
+
+
+
+
+
+aws emr add-steps --cluster-id j-SHXKP31OZZ1A\
+--steps '[{"Args":["hadoop-streaming","-files","s3://hpcchw3/code/mapperV2.py,s3://hpcchw3/code/reducerV2.py","-mapper","mapperV2.py","-reducer","reducerV2.py","-input","s3://hpcchw3/input/movies.csv","-output","s3://hpcchw3/output2/","-jobconf","mapred.reduce.tasks=1"],"Type":"CUSTOM_JAR","ActionOnFailure":"CONTINUE","Jar":"command-runner.jar","Properties":"","Name":"Streaming program2"}]'
+
+
+--auto-terminate
+--enable-debugging

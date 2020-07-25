@@ -1,0 +1,26 @@
+mkdir HPCC_HW3
+cd HPCC_HW3
+virtualenv venv
+source venv/bin/activate
+pip install aws
+pip install awscli
+aws configure
+    From aws.amazon.com, IAM service
+    - Create a new user account to get Key ID and access key
+    - Assign Administrator role 
+    INPUT
+    - Access Key ID(From IAM) = XYZ
+    - Secret Access Key(From IAM) = XYZ
+    - Region = us-east-1
+    - Output = json
+aws s3 mb s3://hw3hpcc
+aws s3 mv ./mapper.py s3://hw3hpcc/code/
+aws s3 mv ./reducer.py s3://hw3hpcc/code/
+aws s3 mv ./movies.csv s3://hw3hpcc/data/
+aws emr list-clusters
+aws emr create-default-roles
+
+CREATE?
+
+
+aws s3 rm s3://hpcchw3/output
